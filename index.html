@@ -93,6 +93,12 @@
                         cursor: pointer;
                         width: 100%;" onclick="LoginFaceBook()">Login</button>
                     </li>
+                    <li>
+                        <img src="#" id="ProfilePic" width="60" height="60" style="display: none; position: relative; left: 50px">
+                    </li>
+                    <li>
+                        <a class="page-scroll" id="Welcome" style="left: 50px"></a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -662,8 +668,11 @@
         </div>
     </div>
     <script>
+    var user = [];
+    var x = document.getElementById("myBtn");
+    var Profilep = document.getElementById("ProfilePic");
+    var Welom = document.getElementById("Welcome");
     function LoginFaceBook() {
-        var x = document.getElementById("myBtn");
         if (x) {
             firebase.initializeApp(config);
             var provider = new firebase.auth.FacebookAuthProvider();
@@ -671,8 +680,13 @@
               // This gives you a Facebook Access Token. You can use it to access the Facebook API.
               var token = result.credential.accessToken;
               // The signed-in user info.
-              var user = result.user;
+              user = result.user;
+              console.log(user);
               // ...
+              x.style.display = 'none';
+              Profilep.style.display = 'inline';
+              Profilep.src = user.photoURL;
+              Welom.text = 'Welcome, ' + user.displayName;
             }).catch(function(error) {
               // Handle Errors here.
               var errorCode = error.code;
