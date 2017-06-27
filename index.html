@@ -23,7 +23,12 @@
 
     <!-- Theme CSS -->
     <link href="css/agency.min.css" rel="stylesheet">
-
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-messaging.js"></script>
+    <!-- Custom CSS files -->
+    <link rel="stylesheet" type="text/css" href="css/Custom.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -34,7 +39,19 @@
 </head>
 
 <body id="page-top" class="index">
-
+    <!--Firebase Includes -->
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDCY3lAwOFJn9QaR83WlUOOK1AauG_ezWY",
+        authDomain: "buddy-3f375.firebaseapp.com",
+        databaseURL: "https://buddy-3f375.firebaseio.com",
+        projectId: "buddy-3f375",
+        storageBucket: "buddy-3f375.appspot.com",
+        messagingSenderId: "501948672835"
+      };
+    </script>
     <!-- Navigation -->
     <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
         <div class="container">
@@ -66,6 +83,15 @@
                     </li>
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                    <li>
+                        <button id="myBtn" style="background-color: #4CAF50;
+                        color: white;
+                        padding: 14px 20px;
+                        margin: 8px 5px;
+                        border: none;
+                        cursor: pointer;
+                        width: 100%;" onclick="LoginFaceBook()">Login</button>
                     </li>
                 </ul>
             </div>
@@ -635,7 +661,31 @@
             </div>
         </div>
     </div>
-
+    <script>
+    function LoginFaceBook() {
+        var x = document.getElementById("myBtn");
+        if (x) {
+            firebase.initializeApp(config);
+            var provider = new firebase.auth.FacebookAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function(result) {
+              // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+              var token = result.credential.accessToken;
+              // The signed-in user info.
+              var user = result.user;
+              // ...
+            }).catch(function(error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // The email of the user's account used.
+              var email = error.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = error.credential;
+              // ...
+            });
+        }
+    }
+    </script>
     <!-- jQuery -->
     <script src="vendor/jquery/jquery.min.js"></script>
 
