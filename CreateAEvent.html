@@ -26,7 +26,7 @@
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-
+    <script type="text/javascript"></script>
     <!-- Theme CSS -->
     <link href="css/agency.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
@@ -37,6 +37,9 @@
     <script src="semantic/dist/semantic.min.js"></script>
     <!-- Custom CSS Files -->
     <link rel="stylesheet" type="text/css" href="css/Custom.css">
+    <link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css'/>
+    <script type='text/javascript' src='js/Custom.js'></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -303,7 +306,36 @@
 	        left: 35%;
 	    }
 	}
+	select {
+	  margin: 50px;
+	  border: 1px solid #111;
+	  background: transparent;
+	  width: 150px;
+	  padding: 5px 35px 5px 5px;
+	  font-size: 16px;
+	  border: 1px solid #ccc;
+	  height: 34px;
+	  -webkit-appearance: none;
+	  -moz-appearance: none;
+	  appearance: none;
+	  background: url(#) 96% / 15% no-repeat #eee;
+	}
 
+
+	/* CAUTION: IE hackery ahead */
+
+
+	select::-ms-expand { 
+	    display: none; /* remove default arrow in IE 10 and 11 */
+	}
+
+	/* target Internet Explorer 9 to undo the custom arrow */
+	@media screen and (min-width:0\0) {
+	    select {
+	        background:none\9;
+	        padding: 5px\9;
+	    }
+	}
 </style>
 <body id="page-top" class="index">
 
@@ -332,6 +364,15 @@
                     </li>
                     <li>
                         <a class="page-scroll" href="MyEvents.html">My Events</a>
+                    </li>
+                    <li>
+                        <button id="myBtn" style="background-color: #4CAF50;
+                        color: white;
+                        padding: 14px 20px;
+                        margin: 8px 5px;
+                        border: none;
+                        cursor: pointer;
+                        width: 100%;" onclick="LoginFaceBook()">Login</button>
                     </li>
                 </ul>
             </div>
@@ -478,7 +519,7 @@
 						         async defer></script>   
                         </div>
                         <ul class="list-inline pull-right" style="position: relative;">
-                            <li><button type="button" class="btn btn-primary next-step">Save and continue</button></li>
+                            <li><button type="button" class="btn btn-primary next-step" id="step1Btn" onclick="SaveLocation()">Save and continue</button></li>
                         </ul>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="step2">
@@ -486,16 +527,7 @@
                             <div class="step_21">
                                 <div class="row">
                                    <h2>Enter Your Contact Info</h2>
-                                   <div class="row">
-		                            <div class="col-md-6">
-		                                <label for="exampleInputEmail1">First Name</label>
-		                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="First Name">
-		                            </div>
-		                            <div class="col-md-6">
-		                                <label for="exampleInputEmail1">Last Name</label>
-		                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
-		                            </div>
-		                        </div>
+                                   
 		                        <div class="row">
 		                            <div class="col-md-6">
 		                                <label for="exampleInputEmail1">Email address</label>
@@ -508,8 +540,8 @@
 		                        </div>
 		                        <div class="row">
 		                            <div class="col-md-6">
-		                                <label for="exampleInputEmail1">Mobile Number</label>
-		                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+		                                <label for="number">Mobile Number(+91)</label>
+		                                <input type="email" class="form-control" id="number" placeholder="Mobile Number">
 		                            </div>
 		                            <div class="col-md-6">
 		                            </div>
@@ -522,8 +554,8 @@
                             </div>
                         </div>
                         <ul class="list-inline pull-right">
-                            <li><button type="button" class="btn btn-default prev-step">Previous</button></li>
-                            <li><button type="button" class="btn btn-primary next-step">Save and continue</button></li>
+                            <button type="button" class="btn btn-default prev-step">Previous</button>
+                            <li><button type="button" class="btn btn-primary next-step" id="step3Btn" onclick="ContactInfo()">Save and continue</button></li>
                         </ul>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="step3">
@@ -532,30 +564,29 @@
                         <hr>
                         <h2>What will your Meetup be about?</h2>
 
-                        <div class="ui fluid multiple search selection dropdown" style="width: 30%; height: 300%">
-				        <input type="hidden" name="country" value="">
-				        <i class="dropdown icon"></i>
-					        <input class="search" autocomplete="off" tabindex="0"><span class="sizer"></span><div class="default text">Select Category</div>
-					        <div class="menu transition hidden" tabindex="-1">
-					        <div class="item" data-value="Gaming"><i class="#"></i>Gaming</div>
-					        <div class="item" data-value="Tech"><i class="#"></i>Tech</div>
-					        <div class="item" data-value="Movies"><i class="#"></i>Movies</div>
-					        <div class="item" data-value="ActiveFit"><i class="#"></i>Outdoors & Adventure</div>
-					        <div class="item" data-value="Restaurant"><i class="#"></i>Restaurants</div>
-					        <div class="item" data-value="Photography"><i class="#"></i>Photography</div>
-					        <div class="item" data-value="Other"><i class="#"></i>Other</div>
-					        </div>
-					        </div>
-                        	<!-- <h3>Describe event details(What is it about?, Who is it for?)</h3> -->
+                        <div class="dropdown">
+					    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Select Category
+					    <span class="caret"></span></button>
+					    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="TagDropDown">
+					      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >Gaming</a></li>
+					      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >Tech</a></li>
+					      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >Movies</a></li>
+					      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >Outdoors & Adventure</a></li>
+					      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >Restaurant</a></li>
+					    	<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >Photography</a></li>
+					      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >Other</a></li>
+					    </ul>
+					  </div>                        	
+					  <!-- <h3>Describe event details(What is it about?, Who is it for?)</h3> -->
                         	<h2>Name of Event</h2>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Name of Event" style="width: 30%">
-                            <h2>Descibe who should join, and what your Meetup will do.</h2>
+                            <input type="email" class="form-control" id="eventname" placeholder="Name of Event" style="width: 30%">
+                            <h2>Event Date: <input type="text" id="departing"></h2>
+                            <h2>Describe who should join, and what your Meetup will do.</h2>
                             <textarea  class="form-control" id="description" placeholder="Enter Your description" rows="8" cols="1" style="width: 60%"></textarea>
                         </div>
                         <ul class="list-inline pull-right">
                             <li><button type="button" class="btn btn-default prev-step">Previous</button></li>
-                            <li><button type="button" class="btn btn-default next-step">Skip</button></li>
-                            <li><button type="button" class="btn btn-primary btn-info-full next-step">Save and continue</button></li>
+                            <button type="button" class="btn btn-primary btn-info-full next-step" id="step3Btn" onclick="EventDetails()">Save and continue</button>
                         </ul>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="complete">
@@ -571,6 +602,115 @@
     </section>
    </div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+<script type="text/javascript">
+
+	  	var x = document.getElementById("myBtn");
+	  	var config = {
+        apiKey: "AIzaSyDCY3lAwOFJn9QaR83WlUOOK1AauG_ezWY",
+        authDomain: "buddy-3f375.firebaseapp.com",
+        databaseURL: "https://buddy-3f375.firebaseio.com",
+        projectId: "buddy-3f375",
+        storageBucket: "buddy-3f375.appspot.com",
+        messagingSenderId: "501948672835"
+      };
+      firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+    var postRef = database.ref('events');
+    var usersRef = database.ref('users');
+
+    var storage = firebase.storage();
+
+    var storageRef = firebase.storage().ref();
+
+    var provider = new firebase.auth.GoogleAuthProvider();
+    var ref = new Firebase("https://buddy-3f375.firebaseio.com");
+	ref.onAuth(function(authData) {
+	  if (authData) {
+	    console.log("User " + authData.uid + " is logged in with " + authData.provider);
+	  } else {
+	    console.log("User is logged out");
+	  }
+	});
+    var user = [];
+    var Profilep = document.getElementById("ProfilePic");
+    var Welom = document.getElementById("Welcome");
+    function writeUserData(userId, name, email) {
+      firebase.database().ref('users/' + userId).set({
+        username: name,
+        email: email,
+      });
+    }
+    function LoginFaceBook() {
+            if (x) {
+                var provider = new firebase.auth.FacebookAuthProvider();
+                firebase.auth().signInWithPopup(provider).then(function(result) {
+                  // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                  var token = result.credential.accessToken;
+                  // The signed-in user info.
+                  user = result.user;
+                  console.log(user);
+                  // ...
+                  writeUserData(user.uid, user.displayName, user.email);
+                  x.style.display = 'none';
+                  Profilep.style.display = 'inline';
+                  Profilep.src = user.photoURL;
+                  Welom.innerHTML = ('Welcome, ' + user.displayName).bold();
+                }).catch(function(error) {
+                  // Handle Errors here.
+                  var errorCode = error.code;
+                  var errorMessage = error.message;
+                  // The email of the user's account used.
+                  var email = error.email;
+                  // The firebase.auth.AuthCredential type that was used.
+                  var credential = error.credential;
+                  // ...
+                });
+            }
+        }
+	    //Customs
+		var newPostKey = postRef.child('events').push().key;
+		var Location;
+		var TimeDate;
+		var Cat;
+		var Eventn;
+		var Mobile;
+		var description;
+		var d = new Date;
+		function SaveLocation() {
+			Location = document.getElementById("pac-input").value;
+		}
+		function ContactInfo() {
+			emaila = document.getElementById("exampleInputEmail1").value;
+			Mobile = document.getElementById("number").value;
+		}
+		function EventDetails() {
+			Cat = document.getElementById("menu1").value;
+			Eventn = document.getElementById("eventname").value;
+			TimeDate = document.getElementById("departing").value;
+			description = document.getElementById("description").value;
+			CreateEvent();
+		}
+		function CreateEvent () {
+			var EventData = {
+				uid: user.uid,
+				description: description,
+				location: Location,
+				date: TimeDate,
+				Category: Cat,
+				name: Eventn,
+				PhoneNum: Mobile,
+				email: emaila
+			}
+			console.log(EventData);
+			var updates = {};
+			updates['/events/' + newPostKey] = EventData;
+			firebase.database().ref().update(updates);
+			window.location="Search.html";
+		}
+	</script>
 </body>
 	<script type="text/javascript">
 		$(document).ready(function () {
@@ -650,9 +790,21 @@
         maxSelections: 8
       })
     ;
-    $('.ui.dropdown')
-  .dropdown()
-  ;
+  //   $('.ui.dropdown')
+  // .dropdown()
+  // ;
+
+  </script>
+  <script type="text/javascript">
+  	 $(function(){
+
+    $(".dropdown-menu").on('click', 'li a', function(){
+      $(".btn:first-child").text($(this).text());
+      $(".btn:first-child").val($(this).text());
+	   });
+
+	});
+
   </script>
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
