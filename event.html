@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Event Details</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Google fonts - Open Sans-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,700,400italic">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- owl carousel-->
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/owl.theme.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"> </script>
+    <script src="js/jquery.cookie.js"> </script>
+    <script src="js/ekko-lightbox.js"></script>
+    <script src="js/jquery.scrollTo.min.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/front.js"></script>
+    <!-- Theme CSS -->
+    <link href="css/agency.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="js/Custom.js"></script>
+</head>
+<body id="page-top" class="index">
+
+    <!-- Navigation -->
+    <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top" style="background-color: #6F6F6F">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="index.html">LetzBuddy</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="Search.html">Explore Events</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="CreateAEvent.html">Create Events</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="MyEvents.html">My Events</a>
+                    </li>
+                    <li>
+                        <button id="myBtn" style="background-color: #4CAF50;
+                        color: white;
+                        padding: 14px 20px;
+                        margin: 8px 5px;
+                        border: none;
+                        cursor: pointer;
+                        width: 100%;" onclick="LoginFaceBook()">Login</button>
+                    </li>
+                    <li>
+                        <img src="#" id="ProfilePic" width="60" height="60" style="display: none; position: relative; left: 50px">
+                    </li>
+                    <li>
+                        <a class="page-scroll" id="Welcome" style="left: 50px"></a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <!-- <header>
+        <div class="container" style="z-index: -1">
+            <div class="intro-text">
+                <div class="intro-lead-in"></div>
+                <div class="intro-heading">Current Events</div>
+                <div class="intro-lead-in">Share what <strong>YOU</strong> want to do</div>
+                
+            </div>
+        </div>
+    </header>-->	
+    <div class="row" style="position: relative; margin-top: 120px">
+              <div class="col-lg-8">
+                <div class="content-column-content">
+                  <h1>Event Details</h1>
+                  <h1 id="ename" style="text-transform: lowercase;">
+                  		<!-- Name of Event -->
+                  </h1>
+                  <h2 id="descript" style="text-transform: lowercase;"> 
+                  		<!-- Description -->
+                  </h2>
+                  <h2 id="location" style="text-transform: lowercase;">
+                  		<!-- Location -->
+                  </h2>
+                  <h2 id="Date" style="text-transform: lowercase;">
+                  		<!-- Date of Event -->
+                  </h2>
+                  <h2 id="email" style="text-transform: lowercase;">
+                  		<!-- Email of Organizer -->
+                  </h2>
+              </div>
+            </div>
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" integrity="sha384-mE6eXfrb8jxl0rzJDBRanYqgBxtJ6Unn4/1F7q4xRRyIw7Vdg9jP4ycT7x1iVsgb" crossorigin="anonymous"></script>
+
+    <!-- Contact Form JavaScript -->
+    <!-- <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script> -->
+
+    <!-- Theme JavaScript -->
+    <script src="js/agency.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+	<script type="text/javascript">
+
+        var x = document.getElementById("myBtn");
+        var config = {
+        apiKey: "AIzaSyDCY3lAwOFJn9QaR83WlUOOK1AauG_ezWY",
+        authDomain: "buddy-3f375.firebaseapp.com",
+        databaseURL: "https://buddy-3f375.firebaseio.com",
+        projectId: "buddy-3f375",
+        storageBucket: "buddy-3f375.appspot.com",
+        messagingSenderId: "501948672835"
+      };
+      firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+    var postRef = database.ref('events');
+    var usersRef = database.ref('users');
+
+    var storage = firebase.storage();
+
+    var storageRef = firebase.storage().ref();
+
+    var provider = new firebase.auth.GoogleAuthProvider();
+    
+    var user = [];
+    var Profilep = document.getElementById("ProfilePic");
+    var Welom = document.getElementById("Welcome");
+    firebase.auth().onAuthStateChanged(function(currentUser) {
+      if (currentUser) {
+        // User is signed in.
+        console.log("Logged In");
+        user = currentUser;
+        x.style.display = 'none';
+        Profilep.style.display = 'inline';
+        Profilep.src = user.photoURL;
+        Welom.innerHTML = ('Welcome, ' + user.displayName).bold(); 
+        console.log("already signed in"+user.displayName);
+
+      } else {
+        // No user is signed in.
+        console.log("user is not logged in");
+      }
+    });
+
+    function writeUserData(userId, name, email) {
+      firebase.database().ref('users/' + userId).set({
+        username: name,
+        email: email,
+      });
+    }
+    function LoginFaceBook() {
+    		console.log("Getting Called");
+            if (x) {
+                var provider = new firebase.auth.FacebookAuthProvider();
+                firebase.auth().signInWithPopup(provider).then(function(result) {
+                  // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                  var token = result.credential.accessToken;
+                  // The signed-in user info.
+                  user = result.user;
+                  console.log(user);
+                  // ...
+                  writeUserData(user.uid, user.displayName, user.email);
+                  x.style.display = 'none';
+                  Profilep.style.display = 'inline';
+                  Profilep.src = user.photoURL;
+                  Welom.innerHTML = ('Welcome, ' + user.displayName).bold();
+                }).catch(function(error) {
+                  // Handle Errors here.
+                  var errorCode = error.code;
+                  var errorMessage = error.message;
+                  // The email of the user's account used.
+                  var email = error.email;
+                  // The firebase.auth.AuthCredential type that was used.
+                  var credential = error.credential;
+                  // ...
+                });
+            }
+        }
+    function getUrlVars()
+	  {
+	      var vars = [], hash;
+	      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	   
+	      for(var i = 0; i < hashes.length; i++)
+	      {
+	          hash = hashes[i].split('=');
+	      hash[1] = unescape(hash[1]);
+	      vars.push(hash[0]);
+	          vars[hash[0]] = hash[1];
+	      }
+	   
+	      return vars;
+	  }
+    $(function(){
+    	var EventId = getUrlVars().id;
+    	console.log(EventId);
+		postRef.child(EventId)
+				.once('value')
+				.then(function(data) {
+					// Put in on the page using html
+					$('#ename').html('Name of Event: ' + data.val().name);
+					$('#descript').html('Description of Event: ' + data.val().description);
+					$('#location').html('Location: ' + data.val().location);
+					$('#Date').html('Event Date: ' + data.val().date);
+					$('#email').html('Email of Organizer: ' + data.val().email);
+				});
+	})
+    </script>
+</body>
+
+</html>

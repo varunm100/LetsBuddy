@@ -38,7 +38,6 @@
     <!-- Custom CSS Files -->
     <link rel="stylesheet" type="text/css" href="css/Custom.css">
     <link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css'/>
-    <script type='text/javascript' src='js/Custom.js'></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,7 +45,9 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" integrity="sha384-0s5Pv64cNZJieYFkXYOTId2HMA2Lfb6q2nAcx2n0RTLUnCAoTTsS0nKEO27XyKcY" crossorigin="anonymous"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
     <![endif]-->
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
 
+<script type="text/javascript" src="js/Custom.js"></script>
 </head>
 <style type="text/css">
 	.wizard {
@@ -374,6 +375,12 @@
                         cursor: pointer;
                         width: 100%;" onclick="LoginFaceBook()">Login</button>
                     </li>
+                    <li>
+                        <img src="#" id="ProfilePic" width="60" height="60" style="display: none; position: relative; left: 50px">
+                    </li>
+                    <li>
+                        <a class="page-scroll" id="Welcome" style="left: 50px"></a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -581,6 +588,10 @@
                         	<h2>Name of Event</h2>
                             <input type="email" class="form-control" id="eventname" placeholder="Name of Event" style="width: 30%">
                             <h2>Event Date: <input type="text" id="departing"></h2>
+                            <h2>Upload a picture(This is what will be seen by other users)</h2>
+                            <div class="form-group">
+								<input type="file" id="mediaCapture" required>
+							</div>
                             <h2>Describe who should join, and what your Meetup will do.</h2>
                             <textarea  class="form-control" id="description" placeholder="Enter Your description" rows="8" cols="1" style="width: 60%"></textarea>
                         </div>
@@ -602,41 +613,50 @@
     </section>
    </div>
 </div>
-<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
-<script type="text/javascript">
+<!-- <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+ --><script type="text/javascript">
 
 	  	var x = document.getElementById("myBtn");
-	  	var config = {
-        apiKey: "AIzaSyDCY3lAwOFJn9QaR83WlUOOK1AauG_ezWY",
-        authDomain: "buddy-3f375.firebaseapp.com",
-        databaseURL: "https://buddy-3f375.firebaseio.com",
-        projectId: "buddy-3f375",
-        storageBucket: "buddy-3f375.appspot.com",
-        messagingSenderId: "501948672835"
-      };
-      firebase.initializeApp(config);
+	  	// var config = {
+    //     apiKey: "AIzaSyDCY3lAwOFJn9QaR83WlUOOK1AauG_ezWY",
+    //     authDomain: "buddy-3f375.firebaseapp.com",
+    //     databaseURL: "https://buddy-3f375.firebaseio.com",
+    //     projectId: "buddy-3f375",
+    //     storageBucket: "buddy-3f375.appspot.com",
+    //     messagingSenderId: "501948672835"
+    //   };
+    //   firebase.initializeApp(config);
 
-    var database = firebase.database();
+    // var database = firebase.database();
 
-    var postRef = database.ref('events');
-    var usersRef = database.ref('users');
+    // var postRef = database.ref('events');
+    // var usersRef = database.ref('users');
 
-    var storage = firebase.storage();
+    // var storage = firebase.storage();
 
-    var storageRef = firebase.storage().ref();
+    // var storageRef = firebase.storage().ref();
 
-    var provider = new firebase.auth.GoogleAuthProvider();
-    var ref = new Firebase("https://buddy-3f375.firebaseio.com");
-	ref.onAuth(function(authData) {
-	  if (authData) {
-	    console.log("User " + authData.uid + " is logged in with " + authData.provider);
-	  } else {
-	    console.log("User is logged out");
-	  }
-	});
+    // var provider = new firebase.auth.GoogleAuthProvider();
     var user = [];
     var Profilep = document.getElementById("ProfilePic");
     var Welom = document.getElementById("Welcome");
+    firebase.auth().onAuthStateChanged(function(currentUser) {
+	  if (currentUser) {
+	    // User is signed in.
+	    user = currentUser;
+	    x.style.display = 'none';
+      	Profilep.style.display = 'inline';
+      	Profilep.src = user.photoURL;
+      	Welom.innerHTML = ('Welcome, ' + user.displayName).bold(); 
+	    console.log("already signed in"+user.displayName);
+
+	  } else {
+	    // No user is signed in.
+	    console.log("user is not logged in");
+	  }
+});
+
+    
     function writeUserData(userId, name, email) {
       firebase.database().ref('users/' + userId).set({
         username: name,
@@ -671,6 +691,7 @@
             }
         }
 	    //Customs
+	    var timeStamp = Date.now() / 1000;
 		var newPostKey = postRef.child('events').push().key;
 		var Location;
 		var TimeDate;
@@ -679,6 +700,15 @@
 		var Mobile;
 		var description;
 		var d = new Date;
+		var file = false;
+    	/*var filePath = firebase.auth() +'-' + d.getTime() + '/' + file.name;*/
+		/*$('#mediaCapture').on('change',function(event){
+    	// console.log("User uploaded a file", event.target.files[0]);
+	    	file = event.target.files[0];
+		});*/
+		/*storage.ref(filePath).put(file).then(function(snapshot) {
+		console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
+		});*/
 		function SaveLocation() {
 			Location = document.getElementById("pac-input").value;
 		}
@@ -693,23 +723,55 @@
 			description = document.getElementById("description").value;
 			CreateEvent();
 		}
+
+
+
 		function CreateEvent () {
+			var eventParci = [];
+      				eventParci.push(user.uid);
+      				console.log(eventParci);
+      				console.log(user.uid);	
 			var EventData = {
 				uid: user.uid,
 				description: description,
 				location: Location,
 				date: TimeDate,
 				Category: Cat,
-				name: Eventn,
+				name: Eventn,	
 				PhoneNum: Mobile,
-				email: emaila
+				email: emaila,
+				TimeStamp: timeStamp,
+				participents: eventParci
 			}
-			console.log(EventData);
+			console.log(EventData);	
 			var updates = {};
 			updates['/events/' + newPostKey] = EventData;
+            
+
+
+
+	var updateMyEvents = firebase.database().ref('/users/' + user.uid +'/');
+
+	 updateMyEvents.once('value').then(function(snapshot) {
+ 		 var username = snapshot.val().username;
+  			 var events =  snapshot.val().myevents;
+  			 console.log( "snapshopt ", events);
+  			 if(events) {
+  			 	events.push(newPostKey);
+  			 }else {
+  			 	events = [];
+  			 	events.push(newPostKey);
+  			 }
+
+
+  			 updates['/users/' + user.uid +'/' + 'myevents'] = events;
+
 			firebase.database().ref().update(updates);
 			window.location="Search.html";
-		}
+
+		});
+
+		}	
 	</script>
 </body>
 	<script type="text/javascript">

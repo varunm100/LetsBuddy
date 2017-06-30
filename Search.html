@@ -84,6 +84,58 @@
     cursor: pointer;
     width: 100%;
 }
+.popup {
+    width:100%;
+    height:100%;
+    display:none;
+    position:fixed;
+    top:0px;
+    left:0px;
+    background:rgba(0,0,0,0.75);
+}
+ 
+/* Inner */
+.popup-inner {
+    max-width:700px;
+    width:90%;
+    padding:40px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform:translate(-50%, -50%);
+    transform:translate(-50%, -50%);
+    box-shadow:0px 2px 6px rgba(0,0,0,1);
+    border-radius:3px;
+    background:#fff;
+}
+ 
+/* Close Button */
+.popup-close {
+    width:30px;
+    height:30px;
+    padding-top:4px;
+    display:inline-block;
+    position:absolute;
+    top:0px;
+    right:0px;
+    transition:ease 0.25s all;
+    -webkit-transform:translate(50%, -50%);
+    transform:translate(50%, -50%);
+    border-radius:1000px;
+    background:rgba(0,0,0,0.8);
+    font-family:Arial, Sans-Serif;
+    font-size:20px;
+    text-align:center;
+    line-height:100%;
+    color:#fff;
+}
+ 
+.popup-close:hover {
+    -webkit-transform:translate(50%, -50%) rotate(180deg);
+    transform:translate(50%, -50%) rotate(180deg);
+    background:rgba(0,0,0,1);
+    text-decoration:none;
+}
 </style>
 <body id="page-top" class="index">
 
@@ -121,6 +173,12 @@
                         border: none;
                         cursor: pointer;
                         width: 100%;" onclick="LoginFaceBook()">Login</button>
+                    </li>
+                    <li>
+                        <img src="#" id="ProfilePic" width="60" height="60" style="display: none; position: relative; left: 50px">
+                    </li>
+                    <li>
+                        <a class="page-scroll" id="Welcome" style="left: 50px"></a>
                     </li>
                 </ul>
             </div>
@@ -198,13 +256,11 @@
                     <h2 class="section-heading">Explore</h2>
                 </div>
             </div>
-            <div class="row" id="event">
-                <!--Append Events Here from firebase -->
+                <div class="row" id="RealEvent">
+                    <!--Append Events Here from firebase --> 
 
 
-
-
-
+                </div>
             </div>
         </div>
     </section>
@@ -453,17 +509,26 @@
     var storageRef = firebase.storage().ref();
 
     var provider = new firebase.auth.GoogleAuthProvider();
-    var ref = new Firebase("https://buddy-3f375.firebaseio.com");
-    ref.onAuth(function(authData) {
-      if (authData) {
-        console.log("User " + authData.uid + " is logged in with " + authData.provider);
-      } else {
-        console.log("User is logged out");
-      }
-    });
+    
     var user = [];
     var Profilep = document.getElementById("ProfilePic");
     var Welom = document.getElementById("Welcome");
+    firebase.auth().onAuthStateChanged(function(currentUser) {
+      if (currentUser) {
+        // User is signed in.
+        user = currentUser;
+        x.style.display = 'none';
+        Profilep.style.display = 'inline';
+        Profilep.src = user.photoURL;
+        Welom.innerHTML = ('Welcome, ' + user.displayName).bold(); 
+        console.log("already signed in"+user.displayName);
+
+      } else {
+        // No user is signed in.
+        console.log("user is not logged in");
+      }
+    });
+
     function writeUserData(userId, name, email) {
       firebase.database().ref('users/' + userId).set({
         username: name,
@@ -497,16 +562,57 @@
                 });
             }
         }
-    postRef.on('value', gotData, errData);
-    function gotData(data) {
-        var EventData = data.val();
-        var keys = Object.keys(EventData);
-        console.log(keys);
+    var Buttons = [];   
+    var eventParc;
+    eventParc = user.uid;
+    var ParciRef;
+    var counter = -1;
+    postRef.limitToFirst(20).on('child_added', function (snapshot) {
+        // console.log(snapshot);
+        // console.log(snapshot.val().name);
+        console.log("Getting Called");
+        /*var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a href="event.html?id=' + snapshot.key +'"><img src="http://mappi.boo.jp/wp-content/themes/simple-smart/image/common/ic_game.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><p class="text-muted">' + snapshot.val().name +'</p></div>'*/
+        var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="http://mappi.boo.jp/wp-content/themes/simple-smart/image/common/ic_game.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><button type="button" class="btn btn-primary join-event" id="' + snapshot.getKey() + '" data-dismiss="modal"><i class="fa fa-times"></i>Join Event</button><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
+        $('#RealEvent').append(HTML);
+        console.log(snapshot.val().location);
+        Buttons.push(snapshot.getKey());
+        $(".join-event").click(function(e) {
+            counter++;
+            /*console.log($(this).attr("id"));
+            snapshot.val().participents.push(user.uid);
+            console.log(snapshot.val().participents);
+            postRef.child($(this).attr("id")).child(participents).set(user.uid);
+            var ParciRef = firebase.database().ref('/events/' + ($(this).attr("id") + '/participents/'));
+            ParciRef.set(user.uid);*/
+            console.log(counter);
+            ParciRef = firebase.database().ref("events/" + $(this).attr("id") + "/participents/");
+            UserRef = firebase.database().ref("users/" + user.uid + "/myevents/");
+            ParciRef.child(counter).set(user.uid);
+            UserRef.child(counter).set($(this).attr("id"));
+            
+        });
+        $('[data-popup-open]').on('click', function(e)  {
+            //console.log($(this).attr("data-popup-open"));
+                            var targeted_popup_class = jQuery(this).attr('data-popup-open');
+                            $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+                     
+                            e.preventDefault();
+                        });
+                     
+                        //----- CLOSE
+                        $('[data-popup-close]').on('click', function(e)  {
+                            var targeted_popup_class = jQuery(this).attr('data-popup-close');
+                            $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+                     
+                            e.preventDefault();
+                        });
+        
+    });
+    for (var i = Buttons.length - 1; i >= 0; i--) {
+        console.log(Buttons[i]);
     }
-    function errData(err) {
-        console.log('Err');
-        console.log(err);
-    }
+    var Counter;
+    /*$('#event').append(htmlStuff)*/
     </script>
 </body>
   <script type="text/javascript">
@@ -530,9 +636,9 @@
     var span = document.getElementsByClassName("close")[0];
 
     // When the user clicks the button, open the modal 
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
+    // btn.onclick = function() {
+    //     modal.style.display = "block";
+    // }
 
     // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
@@ -545,5 +651,6 @@
             modal.style.display = "none";
         }
     }
+    
     </script>
 </html>
