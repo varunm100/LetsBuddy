@@ -724,8 +724,6 @@
 			CreateEvent();
 		}
 
-
-
 		function CreateEvent () {
 			var eventParci = [];
       				eventParci.push(user.uid);
@@ -746,9 +744,6 @@
 			console.log(EventData);	
 			var updates = {};
 			updates['/events/' + newPostKey] = EventData;
-            
-
-
 
 	var updateMyEvents = firebase.database().ref('/users/' + user.uid +'/');
 

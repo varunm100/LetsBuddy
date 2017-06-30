@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script>var user;</script>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,16 +24,120 @@
 
     <!-- Theme CSS -->
     <link href="css/agency.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="semantic/dist/semantic.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" integrity="sha384-0s5Pv64cNZJieYFkXYOTId2HMA2Lfb6q2nAcx2n0RTLUnCAoTTsS0nKEO27XyKcY" crossorigin="anonymous"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
     <![endif]-->
-
 </head>
+<style>
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.mybtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+.popup {
+    width:100%;
+    height:100%;
+    display:none;
+    position:fixed;
+    top:0px;
+    left:0px;
+    background:rgba(0,0,0,0.75);
+}
+ 
+/* Inner */
+.popup-inner {
+    max-width:700px;
+    width:90%;
+    padding:40px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform:translate(-50%, -50%);
+    transform:translate(-50%, -50%);
+    box-shadow:0px 2px 6px rgba(0,0,0,1);
+    border-radius:3px;
+    background:#fff;
+}
+ 
+/* Close Button */
+.popup-close {
+    width:30px;
+    height:30px;
+    padding-top:4px;
+    display:inline-block;
+    position:absolute;
+    top:0px;
+    right:0px;
+    transition:ease 0.25s all;
+    -webkit-transform:translate(50%, -50%);
+    transform:translate(50%, -50%);
+    border-radius:1000px;
+    background:rgba(0,0,0,0.8);
+    font-family:Arial, Sans-Serif;
+    font-size:20px;
+    text-align:center;
+    line-height:100%;
+    color:#fff;
+}
+ 
+.popup-close:hover {
+    -webkit-transform:translate(50%, -50%) rotate(180deg);
+    transform:translate(50%, -50%) rotate(180deg);
+    background:rgba(0,0,0,1);
+    text-decoration:none;
+}
+</style>
 <body id="page-top" class="index">
 
     <!-- Navigation -->
@@ -56,10 +161,25 @@
                         <a class="page-scroll" href="Search.html">Explore Events</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="CreateAEvent.html">Create Event</a>
+                        <a class="page-scroll" href="CreateAEvent.html">Create Events</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="MyEvents.html">My Events</a>
+                    </li>
+                    <li>
+                        <button id="myBtn" style="background-color: #4CAF50;
+                        color: white;
+                        padding: 14px 20px;
+                        margin: 8px 5px;
+                        border: none;
+                        cursor: pointer;
+                        width: 100%;" onclick="LoginFaceBook()">Login</button>
+                    </li>
+                    <li>
+                        <img src="#" id="ProfilePic" width="60" height="60" style="display: none; position: relative; left: 50px">
+                    </li>
+                    <li>
+                        <a class="page-scroll" id="Welcome" style="left: 50px"></a>
                     </li>
                 </ul>
             </div>
@@ -67,137 +187,439 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-
-    <!-- Header -->
     <header>
-        <div class="container">
+        <div class="container" style="z-index: -1">
             <div class="intro-text">
-                <div class="intro-lead-in">Manage Your Events</div>
+                <div class="intro-lead-in"></div>
+                <div class="intro-heading">Current Events</div>
+                <div class="intro-lead-in">Share what <strong>YOU</strong> want to do</div>
+                <!--<a href="#services" class="page-scroll btn btn-xl">Tell Me More</a>-->
             </div>
         </div>
     </header>
-    <!-- Services Section -->
-    <!--
-    <section id="services">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Services</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-                </div>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">E-Commerce</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">Responsive Design</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">Web Security</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                </div>
-            </div>
-        </div>
-    </section> -->
+  
+  <hr>
 
-    <!-- Portfolio Grid Section -->
     <section id="portfolio" class="bg-light-gray">
         <div class="container">
-            <div class="row">
+            <div class="row" id="events">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">My Events</h2>
+                    <h2 class="section-heading">Your Events</h2>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="Search.html">
-                        
-                        <img src="http://mappi.boo.jp/wp-content/themes/simple-smart/image/common/ic_game.png" class="img-responsive" alt="" width="330" height="330">
-                    </a>
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Event1</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="Search.html">
-                        
-                        <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-251c205de6105b216e43f280285d959d.png" class="img-responsive" alt="" width="330" height="330">
-                    </a>
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Event2</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="Search.html">
-                        
-                        <img src="http://www.myiconfinder.com/uploads/iconsets/401bacb05a711c6ceabcd9096b29ee1d-clapper.png" class="img-responsive" alt="" width="330" height="330">
-                    </a>
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Event3</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="Search.html">
-                        
-                        <img src="http://www.freeiconspng.com/uploads/compass-icon-24.png" class="img-responsive" alt="" width="330" height="330">
-                    </a>
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Event4</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="Search.html">
-                        
-                        <img src="https://www.culinaryconceptscorp.com/wp-content/uploads/2017/06/256x256-1.png" class="img-responsive" alt="" width="330" height="330">
-                    </a>
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Event5</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="Search.html">
-                        
-                        <img src="img/logos/camera-flat.png" class="img-responsive" alt="" width="330" height="330">
-                    </a>
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Event6</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="Search.html">
-                        
-                        <img src="https://uideo.net/assets/logo-6a0a4549074a4f97eb232a0d1006a41285433f30063e7b17c2b21bed23de0f50.svg" class="img-responsive" alt="" width="330" height="330">
-                    </a>
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Event7</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="CreateAEvent.html">
-                        
-                        <img src="http://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/add-icon.png" class="img-responsive" alt="" width="330" height="330">
-                    </a>
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Event8</p>
-                    </div>
+                <div class="row" id="RealEvent">
+                    <!--Append Events Here from firebase --> 
+
+
                 </div>
             </div>
         </div>
     </section>
+    <!-- Portfolio Modal 1 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here -->
+                                <h2>Event1</h2>
+                                <p class="item-intro text-muted">Description</p>
+                                <img class="img-responsive img-centered" src="img/portfolio/roundicons-free.png" alt="">
+                                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                <p>
+                                    <strong>Want these icons in this portfolio item sample?</strong>You can download 60 of them for free, courtesy of <a href="https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc">RoundIcons.com</a>, or you can purchase the 1500 icon set <a href="https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc">here</a>.</p>
+                                <ul class="list-inline">
+                                    <li>Date: July 2014</li>
+                                    <li>Client: Round Icons</li>
+                                    <li>Category: sdfd</li>
+                                </ul>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal 2 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Project Heading</h2>
+                                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                <img class="img-responsive img-centered" src="img/portfolio/startup-framework-preview.png" alt="">
+                                <p><a href="http://designmodo.com/startup/?u=787">Startup Framework</a> is a website builder for professionals. Startup Framework contains components and complex blocks (PSD+HTML Bootstrap themes and templates) which can easily be integrated into almost any design. All of these components are made in the same style, and can easily be integrated into projects, allowing you to create hundreds of solutions for your future projects.</p>
+                                <p>You can preview Startup Framework <a href="http://designmodo.com/startup/?u=787">here</a>.</p>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal 3 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here -->
+                                <h2>Project Name</h2>
+                                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                <img class="img-responsive img-centered" src="img/portfolio/treehouse-preview.png" alt="">
+                                <p>Treehouse is a free PSD web template built by <a href="https://www.behance.net/MathavanJaya">Mathavan Jaya</a>. This is bright and spacious design perfect for people or startup companies looking to showcase their apps or other projects.</p>
+                                <p>You can download the PSD template in this portfolio sample item at <a href="http://freebiesxpress.com/gallery/treehouse-free-psd-web-template/">FreebiesXpress.com</a>.</p>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal 4 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here -->
+                                <h2>Project Name</h2>
+                                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                <img class="img-responsive img-centered" src="img/portfolio/golden-preview.png" alt="">
+                                <p>Start Bootstrap's Agency theme is based on Golden, a free PSD website template built by <a href="https://www.behance.net/MathavanJaya">Mathavan Jaya</a>. Golden is a modern and clean one page web template that was made exclusively for Best PSD Freebies. This template has a great portfolio, timeline, and meet your team sections that can be easily modified to fit your needs.</p>
+                                <p>You can download the PSD template in this portfolio sample item at <a href="http://freebiesxpress.com/gallery/golden-free-one-page-web-template/">FreebiesXpress.com</a>.</p>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal 5 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here -->
+                                <h2>Project Name</h2>
+                                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                <img class="img-responsive img-centered" src="img/portfolio/escape-preview.png" alt="">
+                                <p>Escape is a free PSD web template built by <a href="https://www.behance.net/MathavanJaya">Mathavan Jaya</a>. Escape is a one page web template that was designed with agencies in mind. This template is ideal for those looking for a simple one page solution to describe your business and offer your services.</p>
+                                <p>You can download the PSD template in this portfolio sample item at <a href="http://freebiesxpress.com/gallery/escape-one-page-psd-web-template/">FreebiesXpress.com</a>.</p>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal 6 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here -->
+                                <h2>Project Name</h2>
+                                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                <img class="img-responsive img-centered" src="img/portfolio/dreams-preview.png" alt="">
+                                <p>Dreams is a free PSD web template built by <a href="https://www.behance.net/MathavanJaya">Mathavan Jaya</a>. Dreams is a modern one page web template designed for almost any purpose. It’s a beautiful template that’s designed with the Bootstrap framework in mind.</p>
+                                <p>You can download the PSD template in this portfolio sample item at <a href="http://freebiesxpress.com/gallery/dreams-free-one-page-web-template/">FreebiesXpress.com</a>.</p>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div id="myModal" class="modal" style="z-index: 1000">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <!-- <h1><u>Event Name</u></h1>
+            <h2 style="text-align: middle;">Event Description: __________</h2>
+            <h2 style="text-align: left;">Host: __________ </h2>
+            <h2 style="text-align: left;">Date: __________</h2>
+            <h2 style="text-align: left;">Location: __________</h2>
+            <h2 style="text-align: left;">Who Can Attend?: __________</h2>
+            <h2 style="text-align: left;">Recommend Age Group: __________</h2> -->
+            <h2>Project Name</h2>
+                <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                <img class="img-responsive img-centered" src="img/portfolio/roundicons-free.png" alt="">
+                <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                <p>
+                    <strong>Want these icons in this portfolio item sample?</strong>You can download 60 of them for free, courtesy of <a href="https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc">RoundIcons.com</a>, or you can purchase the 1500 icon set <a href="https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc">here</a>.</p>
+                <ul class="list-inline">
+                    <li>Date: July 2014</li>
+                    <li>Client: Round Icons</li>
+                    <li>Category: Graphic Design</li>
+                </ul>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i>Join Event</button>
+          </div>                          
+        </div>
+        <!-- jQuery -->
+    <!-- <script src="vendor/jquery/jquery.min.js"></script> -->
+
+    <!-- Bootstrap Core JavaScript -->
+    <!-- <script src="vendor/bootstrap/js/bootstrap.min.js"></script> -->
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" integrity="sha384-mE6eXfrb8jxl0rzJDBRanYqgBxtJ6Unn4/1F7q4xRRyIw7Vdg9jP4ycT7x1iVsgb" crossorigin="anonymous"></script>
+
+    <!-- Contact Form JavaScript -->
+    <!-- <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script> -->
+
+    <!-- Theme JavaScript -->
+    <script src="js/agency.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+<script type="text/javascript">
+
+        var x = document.getElementById("myBtn");
+        var config = {
+        apiKey: "AIzaSyDCY3lAwOFJn9QaR83WlUOOK1AauG_ezWY",
+        authDomain: "buddy-3f375.firebaseapp.com",
+        databaseURL: "https://buddy-3f375.firebaseio.com",
+        projectId: "buddy-3f375",
+        storageBucket: "buddy-3f375.appspot.com",
+        messagingSenderId: "501948672835"
+      };
+      firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+    var postRef = database.ref('events');
+    var usersRef = database.ref('users');
+
+    var storage = firebase.storage();
+
+    var storageRef = firebase.storage().ref();
+
+    var provider = new firebase.auth.GoogleAuthProvider();
+    
+    
+    var Profilep = document.getElementById("ProfilePic");
+    var Welom = document.getElementById("Welcome");
+    firebase.auth().onAuthStateChanged(function(currentUser) {
+      if (currentUser) {
+        // User is signed in.
+        user = currentUser;
+        x.style.display = 'none';
+        Profilep.style.display = 'inline';
+        Profilep.src = user.photoURL;
+        Welom.innerleHTML = ('Welcome, ' + user.displayName).bold(); 
+        console.log("already signed in"+user.uid);
+        a();
+
+      } else {
+        // No user is signed in.
+        console.log("user is not logged in");
+      }
+    });
+
+    function writeUserData(userId, name, email) {
+      firebase.database().ref('users/' + userId).set({
+        username: name,
+        email: email,
+      });
+    }
+    function LoginFaceBook() {
+            if (x) {
+                var provider = new firebase.auth.FacebookAuthProvider();
+                firebase.auth().signInWithPopup(provider).then(function(result) {
+                  // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                  var token = result.credential.accessToken;
+                  // The signed-in user info.
+                  user = result.user;
+                  console.log(user);
+                  // ...
+                  writeUserData(user.uid, user.displayName, user.email);
+                  x.style.display = 'none';
+                  Profilep.style.display = 'inline';
+                  Profilep.src = user.photoURL;
+                  Welom.innerHTML = ('Welcome, ' + user.displayName).bold();
+                }).catch(function(error) {
+                  // Handle Errors here.
+                  var errorCode = error.code;
+                  var errorMessage = error.message;
+                  // The email of the user's account used.
+                  var email = error.email;
+                  // The firebase.auth.AuthCredential type that was used.
+                  var credential = error.credential;
+                  // ...
+                });
+            }
+        }
+    function unique(list) {
+        var result = [];
+        $.each(list, function(i, e) {
+            if ($.inArray(e, result) == -1) result.push(e);
+        });
+        return result;
+    }
+
+    function a() {
+        var Buttons = [];   
+        var eventParc;
+        eventParc = user.uid;
+        var ParciRef;
+        var counter = -1;
+        var UserRefRoot;
+        var countere = 1;
+        var EventsEnrolled = [];
+        var uniqueNames = [];
+        var CounterOne = 0;
+        ParciRef = firebase.database().ref("events/" + $(this).attr("id") + "/participents/");
+        UserRef = firebase.database().ref("users/" + user.uid + "/myevents/");
+        UserRefRoot = firebase.database().ref("users");
+        if (CounterOne < 1) {        
+            UserRefRoot.child(user.uid)
+                    .once('value')
+                    .then(function(data) {
+                        console.log(data.val().myevents[2]);
+                        for (var i = 0; i < data.val().myevents.length;i++) {
+                            EventsEnrolled[i] = data.val().myevents[i];
+                        }
+                        countere++;
+                        CounterOne++;
+                        EventsEnrolled = unique(EventsEnrolled).slice();
+                        console.log(EventsEnrolled);
+                    });
+        }
+        var EventRefe;
+        
+    
+    postRef.limitToFirst(20).on('child_added', function (snapshot) {
+        // console.log(snapshot);
+        // console.log(snapshot.val().name);
+        for(var i = 0; i < EventsEnrolled.length;i++) {
+            if (snapshot.getKey() == EventsEnrolled[i]) {
+            var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="http://mappi.boo.jp/wp-content/themes/simple-smart/image/common/ic_game.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><i class="fa fa-times"></i><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
+            $('#RealEvent').append(HTML);
+            Buttons.push(snapshot.getKey());
+            
+            $('[data-popup-open]').on('click', function(e)  {
+                //console.log($(this).attr("data-popup-open"));
+                                var targeted_popup_class = jQuery(this).attr('data-popup-open');
+                                $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+                         
+                                e.preventDefault();
+                            });
+                         
+                            //----- CLOSE
+                            $('[data-popup-close]').on('click', function(e)  {
+                                var targeted_popup_class = jQuery(this).attr('data-popup-close');
+                                $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+                         
+                                e.preventDefault();
+                            });
+                    }  
+            }
+        });
+    }
+    /*$('#event').append(htmlStuff)*/
+    </script>
 </body>
+  <script type="text/javascript">
+    $('.dropdown')
+      .dropdown({
+        maxSelections: 8
+      })
+    ;
+    $('.ui.dropdown')
+  .dropdown()
+  ;
+  </script>
+  <script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("join");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    // btn.onclick = function() {
+    //     modal.style.display = "block";
+    // }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    
+    </script>
 </html>

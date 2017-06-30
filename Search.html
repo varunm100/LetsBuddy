@@ -136,6 +136,46 @@
     background:rgba(0,0,0,1);
     text-decoration:none;
 }
+.dropdown.dropdown-lg .dropdown-menu {
+    margin-top: -1px;
+    padding: 6px 20px;
+}
+.input-group-btn .btn-group {
+    display: flex !important;
+}
+.btn-group .btn {
+    border-radius: 0;
+    margin-left: -1px;
+}
+.btn-group .btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.btn-group .form-horizontal .btn[type="submit"] {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form-group .form-control:last-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 500px;
+        margin: 0 auto;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 500px;
+    }
+}
 </style>
 <body id="page-top" class="index">
 
@@ -201,22 +241,19 @@
       <div class="col-sm-3" style="">
       </div>
       <div class="col-sm-6" style="background-color: #0F1721; min-height: 80px;">
-        <div class="ui fluid multiple search selection dropdown" style="position: absolute; margin-top: 15px; width: 420px; height: 50px">
-        <input type="hidden" name="country" value="">
-        <i class="dropdown icon"></i>
-        <input class="search" autocomplete="off" tabindex="0"><span class="sizer"></span><div class="default text" style="font-size: 150%">Select Category</div>
-        <div class="menu transition hidden" tabindex="-1">
-        <div class="item" data-value="AllEvents"><i class="#"></i>All Events</div>
-        <div class="item" data-value="Gaming"><i class="#"></i>Gaming</div>
-        <div class="item" data-value="Tech"><i class="#"></i>Tech</div>
-        <div class="item" data-value="Movies"><i class="#"></i>Movies</div>
-        <div class="item" data-value="ActiveFit"><i class="#"></i>Outdoors & Adventure</div>
-        <div class="item" data-value="Restaurant"><i class="#"></i>Restaurants</div>
-        <div class="item" data-value="Photography"><i class="#"></i>Photography</div>
-        <div class="item" data-value="Other"><i class="#"></i>Other</div>
-        </div>
-        </div>
-        <div style="position: absolute; margin-left: 705px;margin-top: 22px; width: 70px; height: 50px">
+        
+        <div class="form-group" style="position: absolute; margin-top: 23px; width: 420px; height: 50px">
+            <select class="form-control" id="SelectedCat">
+                <option value="0" selected>All Events</option>
+                <option value="1">Gaming</option>
+                <option value="2">Tech</option>
+                <option value="3">Movies</option>
+                <option value="4">Outdoors & Adventure</option>
+                <option value="5">Restaurants</option>
+                <option value="6">Other</option>
+            </select>
+          </div>
+        <!-- <div style="position: absolute; margin-left: 705px;margin-top: 22px; width: 70px; height: 50px">
           <h2 style="color: white; text-transform: lowercase; margin-right: 5px;">of</h2>
         </div>
         <div style="position: absolute; margin-left: 430px;margin-top: 22px; width: 70px; height: 50px">
@@ -243,12 +280,12 @@
           <option value="5">100 miles</option>
           <option value="6">any distance</option>
           </select>
-        </div>
-        </div>
+        </div>-->
+         <button type="button" class="btn btn-primary" style="position: absolute; margin-left: 450px;margin-top: 15px; height: 50px; width: 300px" id="Search" onclick="SearchButton()">Search</button>
+        </div> 
     </div>
   </div>
   <hr>
-
     <section id="portfolio" class="bg-light-gray">
         <div class="container">
             <div class="row" id="events">
@@ -562,69 +599,113 @@
                 });
             }
         }
+    var e = document.getElementById("SelectedCat");
+    var SelectedCategory = 'All Events'
+    function SearchButton() {
+        SelectedCategory = e.options[e.selectedIndex].value;
+        if (SelectedCategory == 0) { SelectedCategory = 'All Events'}
+        else if (SelectedCategory == 1) { SelectedCategory = 'Gaming';}
+        else if (SelectedCategory == 2) { SelectedCategory = 'Tech';}
+        else if (SelectedCategory == 3) { SelectedCategory = 'Movies';}
+        else if (SelectedCategory == 4) { SelectedCategory = 'Outdoors & Adventure';}
+        else if (SelectedCategory == 5) { SelectedCategory = 'Restaurants';}
+        else if (SelectedCategory == 6) { SelectedCategory = 'Other';}
+        DisplayData(SelectedCategory);
+        console.log("Searh Button Called");
+    }
     var Buttons = [];   
     var eventParc;
     eventParc = user.uid;
     var ParciRef;
     var counter = -1;
-    postRef.limitToFirst(20).on('child_added', function (snapshot) {
-        // console.log(snapshot);
-        // console.log(snapshot.val().name);
-        console.log("Getting Called");
-        /*var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a href="event.html?id=' + snapshot.key +'"><img src="http://mappi.boo.jp/wp-content/themes/simple-smart/image/common/ic_game.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><p class="text-muted">' + snapshot.val().name +'</p></div>'*/
-        var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="http://mappi.boo.jp/wp-content/themes/simple-smart/image/common/ic_game.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><button type="button" class="btn btn-primary join-event" id="' + snapshot.getKey() + '" data-dismiss="modal"><i class="fa fa-times"></i>Join Event</button><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
-        $('#RealEvent').append(HTML);
-        console.log(snapshot.val().location);
-        Buttons.push(snapshot.getKey());
-        $(".join-event").click(function(e) {
-            counter++;
-            /*console.log($(this).attr("id"));
-            snapshot.val().participents.push(user.uid);
-            console.log(snapshot.val().participents);
-            postRef.child($(this).attr("id")).child(participents).set(user.uid);
-            var ParciRef = firebase.database().ref('/events/' + ($(this).attr("id") + '/participents/'));
-            ParciRef.set(user.uid);*/
-            console.log(counter);
-            ParciRef = firebase.database().ref("events/" + $(this).attr("id") + "/participents/");
-            UserRef = firebase.database().ref("users/" + user.uid + "/myevents/");
-            ParciRef.child(counter).set(user.uid);
-            UserRef.child(counter).set($(this).attr("id"));
+    if(SelectedCategory == 'All Events') {
+        postRef.limitToFirst(20).on('child_added', function (snapshot) {
+                var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="http://mappi.boo.jp/wp-content/themes/simple-smart/image/common/ic_game.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><button type="button" class="btn btn-primary join-event" id="' + snapshot.getKey() + '" data-dismiss="modal"><i class="fa fa-times"></i>Join Event</button><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
+                //$('#RealEvent').empty();
+                $('#RealEvent').append(HTML);
+                console.log(snapshot.val().Category);
+                Buttons.push(snapshot.getKey());
+                $(".join-event").click(function(e) {
+                    counter++;
+                    console.log(counter);
+                    ParciRef = firebase.database().ref("events/" + $(this).attr("id") + "/participents/");
+                    UserRef = firebase.database().ref("users/" + user.uid + "/myevents/");
+                    ParciRef.child(counter).set(user.uid);
+                    UserRef.child(counter).set($(this).attr("id"));
+                    
+                });
+                $('[data-popup-open]').on('click', function(e)  {
+                    //console.log($(this).attr("data-popup-open"));
+                                    var targeted_popup_class = jQuery(this).attr('data-popup-open');
+                                    $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+                             
+                                    e.preventDefault();
+                                });
+                             
+                                //----- CLOSE
+                                $('[data-popup-close]').on('click', function(e)  {
+                                    var targeted_popup_class = jQuery(this).attr('data-popup-close');
+                                    $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+                             
+                                    e.preventDefault();
+                                });
+        });
+    }
+    function DisplayData(SelectedCate) {
+        $('#RealEvent').empty();
+        postRef.limitToFirst(20).on('child_added', function (snapshot) {
+            // console.log(snapshot);
+            // console.log(snapshot.val().name);
+            console.log("initialized");
+            if (SelectedCate == snapshot.val().Category) {
+                //$("#RealEvent").remove(HTML);
+                var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="http://mappi.boo.jp/wp-content/themes/simple-smart/image/common/ic_game.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><button type="button" class="btn btn-primary join-event" id="' + snapshot.getKey() + '" data-dismiss="modal"><i class="fa fa-times"></i>Join Event</button><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
+                console.log("Called");
+                $('#RealEvent').append(HTML);
+                console.log(snapshot.val().Category);
+                Buttons.push(snapshot.getKey());
+                $(".join-event").click(function(e) {
+                    counter++;
+                    console.log(counter);
+                    ParciRef = firebase.database().ref("events/" + $(this).attr("id") + "/participents/");
+                    UserRef = firebase.database().ref("users/" + user.uid + "/myevents/");
+                    ParciRef.child(counter).set(user.uid);
+                    UserRef.child(counter).set($(this).attr("id"));
+                    
+                });
+                $('[data-popup-open]').on('click', function(e)  {
+                    //console.log($(this).attr("data-popup-open"));
+                                    var targeted_popup_class = jQuery(this).attr('data-popup-open');
+                                    $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+                             
+                                    e.preventDefault();
+                                });
+                             
+                                //----- CLOSE
+                                $('[data-popup-close]').on('click', function(e)  {
+                                    var targeted_popup_class = jQuery(this).attr('data-popup-close');
+                                    $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+                             
+                                    e.preventDefault();
+                                });
+            }
             
         });
-        $('[data-popup-open]').on('click', function(e)  {
-            //console.log($(this).attr("data-popup-open"));
-                            var targeted_popup_class = jQuery(this).attr('data-popup-open');
-                            $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
-                     
-                            e.preventDefault();
-                        });
-                     
-                        //----- CLOSE
-                        $('[data-popup-close]').on('click', function(e)  {
-                            var targeted_popup_class = jQuery(this).attr('data-popup-close');
-                            $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
-                     
-                            e.preventDefault();
-                        });
-        
-    });
-    for (var i = Buttons.length - 1; i >= 0; i--) {
-        console.log(Buttons[i]);
+    } 
+        /*$('#event').append(htmlStuff)*/
+        </script>
+    </body>
+      <script type="text/javascript">
+        $('.dropdown')
+          .dropdown({
+            maxSelections: 8
+          })
+        ;
+        $('.ui.dropdown')
+      .dropdown()
+      ;
+      </script>
     }
-    var Counter;
-    /*$('#event').append(htmlStuff)*/
-    </script>
-</body>
-  <script type="text/javascript">
-    $('.dropdown')
-      .dropdown({
-        maxSelections: 8
-      })
-    ;
-    $('.ui.dropdown')
-  .dropdown()
-  ;
-  </script>
   <script>
     // Get the modal
     var modal = document.getElementById('myModal');
