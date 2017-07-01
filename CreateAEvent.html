@@ -590,7 +590,7 @@
                             <h2>Event Date: <input type="text" id="departing"></h2>
                             <h2>Upload a picture(This is what will be seen by other users)</h2>
                             <div class="form-group">
-								<input type="file" id="mediaCapture" required>
+								<input type="file" onchange="getFileName(this)" accept=".png, .jpg, .bmp, .JPEG, .JPG, .svg, .tiff, .gif">
 							</div>
                             <h2>Describe who should join, and what your Meetup will do.</h2>
                             <textarea  class="form-control" id="description" placeholder="Enter Your description" rows="8" cols="1" style="width: 60%"></textarea>
@@ -701,14 +701,14 @@
 		var description;
 		var d = new Date;
 		var file = false;
-    	/*var filePath = firebase.auth() +'-' + d.getTime() + '/' + file.name;*/
-		/*$('#mediaCapture').on('change',function(event){
+		$('#mediaCapture').on('change',function(event){
     	// console.log("User uploaded a file", event.target.files[0]);
 	    	file = event.target.files[0];
-		});*/
+		});
 		/*storage.ref(filePath).put(file).then(function(snapshot) {
 		console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
 		});*/
+		var storageFolder = '/pictures/';
 		function SaveLocation() {
 			Location = document.getElementById("pac-input").value;
 		}
@@ -721,10 +721,30 @@
 			Eventn = document.getElementById("eventname").value;
 			TimeDate = document.getElementById("departing").value;
 			description = document.getElementById("description").value;
-			CreateEvent();
+			console.log("Called");
 		}
-
-		function CreateEvent () {
+		function getFileName(fileInput) {
+    		var filePath = firebase.auth() +'-' + d.getTime() + '/' + file.name;
+		    file = fileInput.files[0];
+		    fileName = filePath;
+		    storageRef = firebase.storage().ref(storageFolder + fileName);
+		    uploadTask = storageRef.put(file);
+		    //console.log(storageRef.child("/pcitures/" + filePath).getDownloadUrl().getResult()); 
+		};
+		/*storage.ref(filePath).put(file).then(function(snapshot) {
+		console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
+ 		 var username = snapshot.val().username;
+  			 var events =  snapshot.val().myevents;
+  			 console.log( "snapshopt ", events);
+  			 if(events) {
+  			 	events.push(newPostKey);
+  			 } else {
+  			 	events = [];
+  			 	events.push(newPostKey);
+  			 }
+  			 console.log(snapshot.metadata.downloadURLs[0]);
+		});*/
+		function CreateEvent (imageurl) {
 			var eventParci = [];
       				eventParci.push(user.uid);
       				console.log(eventParci);
@@ -739,7 +759,8 @@
 				PhoneNum: Mobile,
 				email: emaila,
 				TimeStamp: timeStamp,
-				participents: eventParci
+				participents: eventParci,
+				image: imageurl
 			}
 			console.log(EventData);	
 			var updates = {};
@@ -748,6 +769,8 @@
 	var updateMyEvents = firebase.database().ref('/users/' + user.uid +'/');
 
 	 updateMyEvents.once('value').then(function(snapshot) {
+	 	storage.ref(filePath).put(file).then(function(snapshot) {
+		console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
  		 var username = snapshot.val().username;
   			 var events =  snapshot.val().myevents;
   			 console.log( "snapshopt ", events);
@@ -762,7 +785,8 @@
   			 updates['/users/' + user.uid +'/' + 'myevents'] = events;
 
 			firebase.database().ref().update(updates);
-			window.location="Search.html";
+			//window.location="Search.html";
+		});
 
 		});
 
