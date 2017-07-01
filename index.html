@@ -65,7 +65,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top" style="margin-left:-100px">LetzBuddy</a>
+                <a class="navbar-brand page-scroll" href="#page-top" style="margin-left:-200px">LetzBuddy</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -98,16 +98,6 @@
                         cursor: pointer;
                         margin-top: -3px;
                         width: 100%;" onclick="LoginFaceBook()">Login</button>
-                    </li>
-                    <li>
-                        <button id="Logout" style="background-color: #fed136;
-                        color: white;
-                        padding: 14px 20px;
-                        margin: 8px 5px;
-                        border: none;
-                        cursor: pointer;
-                        margin-top: -3px;
-                        width: 100%;" onclick="Logout()">Logout</button>
                     </li>
                     <li>
                         <img src="#" id="ProfilePic" width="60" height="60" style="display: none; position: relative; left: 50px">
@@ -534,13 +524,6 @@ Let’s go for a movie? Well LetzBuddy connects you to other people who wants to
         username: name,
         email: email,
       });
-    }
-    function Logout() {
-        firebase.auth().signOut().then(function() {
-
-        }).catch(function(error) {
-
-        });
     }
     function LoginFaceBook() {
         if (x) {
