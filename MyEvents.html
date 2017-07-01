@@ -38,6 +38,9 @@
     <![endif]-->
 </head>
 <style>
+header{
+            height: 50%;
+        }
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -191,8 +194,8 @@
         <div class="container" style="z-index: -1">
             <div class="intro-text">
                 <div class="intro-lead-in"></div>
-                <div class="intro-heading">Current Events</div>
-                <div class="intro-lead-in">Share what <strong>YOU</strong> want to do</div>
+                <div class="intro-heading">Your Events</div>
+                <div class="intro-lead-in">Enjoy<strong>being</strong> a part </div>
                 <!--<a href="#services" class="page-scroll btn btn-xl">Tell Me More</a>-->
             </div>
         </div>
@@ -558,7 +561,8 @@
         // console.log(snapshot.val().name);
         for(var i = 0; i < EventsEnrolled.length;i++) {
             if (snapshot.getKey() == EventsEnrolled[i]) {
-            var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="http://mappi.boo.jp/wp-content/themes/simple-smart/image/common/ic_game.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><i class="fa fa-times"></i><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
+            
+            var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="img/portfolio/gaming.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><i class="fa fa-times"></i><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
             $('#RealEvent').append(HTML);
             Buttons.push(snapshot.getKey());
             
