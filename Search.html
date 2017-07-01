@@ -95,6 +95,7 @@ header{
     top:0px;
     left:0px;
     background:rgba(0,0,0,0.75);
+    z-index: 3 !important;
 }
  
 /* Inner */
@@ -190,7 +191,7 @@ header{
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="index.html" style="margin-left:-250px">LetzBuddy</a>
+                <a class="navbar-brand page-scroll" href="index.html" style="margin-left:-200px">LetzBuddy</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -515,7 +516,7 @@ header{
     <!-- <script src="vendor/jquery/jquery.min.js"></script> -->
 
     <!-- Bootstrap Core JavaScript -->
-    <!-- <script src="vendor/bootstrap/js/bootstrap.min.js"></script> -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" integrity="sha384-mE6eXfrb8jxl0rzJDBRanYqgBxtJ6Unn4/1F7q4xRRyIw7Vdg9jP4ycT7x1iVsgb" crossorigin="anonymous"></script>
@@ -630,7 +631,7 @@ header{
                 if (snapshot.val().Category == 'Outdoors & Adventure') {console.log("Found"); Image = 'img/portfolio/adv1.jpg';}
                  if (snapshot.val().Category == 'Movies') {console.log("Found"); Image = 'img/portfolio/movie1.jpg';}
                 if (snapshot.val().Category == 'Tech') {console.log("Found"); Image = 'img/portfolio/tech.jpg';}
-                var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="'+ Image +'" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><button type="button" class="btn btn-primary join-event" id="' + snapshot.getKey() + '" data-dismiss="modal"><i class="fa fa-times"></i>Join Event</button><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
+                var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="'+ Image +'" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><button type="button" class="btn btn-primary join-event" id="' + snapshot.getKey() + '" data-dismiss="modal">Join Event</button><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
                 //$('#RealEvent').empty();
                 $('#RealEvent').append(HTML);
                 console.log(snapshot.val().Category);
@@ -641,13 +642,12 @@ header{
                     ParciRef = firebase.database().ref("events/" + $(this).attr("id") + "/participents/");
                     UserRef = firebase.database().ref("users/" + user.uid + "/myevents/");
                     ParciRef.child(counter).set(user.uid);
-                    UserRef.child(counter).set($(this).attr("id"));
-                    
+                    UserRef.child(counter).set($(this).attr("id")); 
                 });
                 $('[data-popup-open]').on('click', function(e)  {
                     //console.log($(this).attr("data-popup-open"));
                                     var targeted_popup_class = jQuery(this).attr('data-popup-open');
-                                    $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+                                    $('[data-popup="' + targeted_popup_class + '"]').fadeIn(750);
                              
                                     e.preventDefault();
                                 });
