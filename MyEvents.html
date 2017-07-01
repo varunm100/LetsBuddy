@@ -170,12 +170,13 @@ header{
                         <a class="page-scroll" href="MyEvents.html">My Events</a>
                     </li>
                     <li>
-                        <button id="myBtn" style="background-color: #4CAF50;
+                        < <button id="myBtn" style="background-color: #fed136;
                         color: white;
                         padding: 14px 20px;
                         margin: 8px 5px;
                         border: none;
                         cursor: pointer;
+                        margin-top: -15px;
                         width: 100%;" onclick="LoginFaceBook()">Login</button>
                     </li>
                     <li>
@@ -561,8 +562,8 @@ header{
         // console.log(snapshot.val().name);
         for(var i = 0; i < EventsEnrolled.length;i++) {
             if (snapshot.getKey() == EventsEnrolled[i]) {
-            
-            var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="img/portfolio/gaming.png" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><i class="fa fa-times"></i><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
+
+            var HTML = '<div class="col-md-4 col-sm-6 portfolio-item"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#"><img src="img/portfolio/adv1.jpg" class="img-responsive" alt="" width="330" height="330"></a><div class="portfolio-caption"><a class="btn" data-popup-open="a'+ snapshot.getKey() +'" href="#">' + snapshot.val().name + '</a></div></div><div class="popup" data-popup="a'+ snapshot.getKey() +'"><div class="popup-inner"><h2>' + snapshot.val().name + '</h2><p>' + '<b>Description:</b> ' + '<br>' +snapshot.val().description + '</p><p><p>' + '<b>Location: </b>' + snapshot.val().location + '</p><p>' + '<b>Event Date: </b>' + snapshot.val().date + '</p> <p>' + '<b>Email of Organizer: </b>' + snapshot.val().email + '</p><i class="fa fa-times"></i><br><a data-popup-close="a'+ snapshot.getKey() +'" href="#">Close</a></p><a class="popup-close" data-popup-close="a'+ snapshot.getKey() +'" href="#">x</a></div></div>';
             $('#RealEvent').append(HTML);
             Buttons.push(snapshot.getKey());
             

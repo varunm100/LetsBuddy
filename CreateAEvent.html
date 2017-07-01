@@ -50,10 +50,6 @@
 <script type="text/javascript" src="js/Custom.js"></script>
 </head>
 <style type="text/css">
-header{
-	background-image: url("img/l.jpg");
-            height: 10%;
-}
 	.wizard {
 	    margin: 20px auto;
 	    background: #fff;
@@ -352,7 +348,7 @@ header{
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="index.html" style="margin-left:-200px">LetzBuddy</a>
+                <a class="navbar-brand page-scroll" href="index.html">LetzBuddy</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -371,13 +367,12 @@ header{
                         <a class="page-scroll" href="MyEvents.html">My Events</a>
                     </li>
                     <li>
-                        <button id="myBtn" style="background-color: #fed136;
+                        <button id="myBtn" style="background-color: #4CAF50;
                         color: white;
                         padding: 14px 20px;
                         margin: 8px 5px;
                         border: none;
                         cursor: pointer;
-     					margin-top: -3px;
                         width: 100%;" onclick="LoginFaceBook()">Login</button>
                     </li>
                     <li>
@@ -595,7 +590,7 @@ header{
                             <h2>Event Date: <input type="text" id="departing"></h2>
                             <h2>Upload a picture(This is what will be seen by other users)</h2>
                             <div class="form-group">
-								<input type="file" onchange="getFileName(this)" accept=".png, .jpg, .bmp, .JPEG, .JPG, .svg, .tiff, .gif">
+								<input type="file" id="mediaCapture" required>
 							</div>
                             <h2>Describe who should join, and what your Meetup will do.</h2>
                             <textarea  class="form-control" id="description" placeholder="Enter Your description" rows="8" cols="1" style="width: 60%"></textarea>
@@ -706,14 +701,14 @@ header{
 		var description;
 		var d = new Date;
 		var file = false;
-		$('#mediaCapture').on('change',function(event){
+    	/*var filePath = firebase.auth() +'-' + d.getTime() + '/' + file.name;*/
+		/*$('#mediaCapture').on('change',function(event){
     	// console.log("User uploaded a file", event.target.files[0]);
 	    	file = event.target.files[0];
-		});
+		});*/
 		/*storage.ref(filePath).put(file).then(function(snapshot) {
 		console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
 		});*/
-		var storageFolder = '/pictures/';
 		function SaveLocation() {
 			Location = document.getElementById("pac-input").value;
 		}
@@ -726,30 +721,10 @@ header{
 			Eventn = document.getElementById("eventname").value;
 			TimeDate = document.getElementById("departing").value;
 			description = document.getElementById("description").value;
-			console.log("Called");
+			CreateEvent();
 		}
-		function getFileName(fileInput) {
-    		var filePath = firebase.auth() +'-' + d.getTime() + '/' + file.name;
-		    file = fileInput.files[0];
-		    fileName = filePath;
-		    storageRef = firebase.storage().ref(storageFolder + fileName);
-		    uploadTask = storageRef.put(file);
-		    //console.log(storageRef.child("/pcitures/" + filePath).getDownloadUrl().getResult()); 
-		};
-		/*storage.ref(filePath).put(file).then(function(snapshot) {
-		console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
- 		 var username = snapshot.val().username;
-  			 var events =  snapshot.val().myevents;
-  			 console.log( "snapshopt ", events);
-  			 if(events) {
-  			 	events.push(newPostKey);
-  			 } else {
-  			 	events = [];
-  			 	events.push(newPostKey);
-  			 }
-  			 console.log(snapshot.metadata.downloadURLs[0]);
-		});*/
-		function CreateEvent (imageurl) {
+
+		function CreateEvent () {
 			var eventParci = [];
       				eventParci.push(user.uid);
       				console.log(eventParci);
@@ -764,8 +739,7 @@ header{
 				PhoneNum: Mobile,
 				email: emaila,
 				TimeStamp: timeStamp,
-				participents: eventParci,
-				image: imageurl
+				participents: eventParci
 			}
 			console.log(EventData);	
 			var updates = {};
@@ -774,8 +748,6 @@ header{
 	var updateMyEvents = firebase.database().ref('/users/' + user.uid +'/');
 
 	 updateMyEvents.once('value').then(function(snapshot) {
-	 	storage.ref(filePath).put(file).then(function(snapshot) {
-		console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
  		 var username = snapshot.val().username;
   			 var events =  snapshot.val().myevents;
   			 console.log( "snapshopt ", events);
@@ -790,8 +762,7 @@ header{
   			 updates['/users/' + user.uid +'/' + 'myevents'] = events;
 
 			firebase.database().ref().update(updates);
-			//window.location="Search.html";
-		});
+			window.location="Search.html";
 
 		});
 
